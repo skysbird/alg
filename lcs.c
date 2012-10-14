@@ -1,5 +1,5 @@
 #include "stdio.h"
-
+#include "string.h"
 
 void count_lcs(char *a, char *b,int length_a, int length_b,int *count, int *flag){
 	int i,j;
@@ -23,15 +23,15 @@ void count_lcs(char *a, char *b,int length_a, int length_b,int *count, int *flag
 				*(flag+i*length_b + j) = 1;
 			}
 			else{
-				if (i == 0 && j == 0  ){
+				if (i == 0 && j == 0  ){ // very boring boundage condition check
 					*(count+i*length_b+j) = 0;	
 					*(flag+i*length_b + j) = 2;
 				}
-				else if (i == 0){
+				else if (i == 0){// very boring boundage condition check
 					*(count+i*length_b+j) = *(count+i*length_b+j-1);
 					*(flag+i*length_b + j) = 2;
 				}
-				else if (j == 0){
+				else if (j == 0){// very boring boundage condition check
 					*(count+i*length_b+j) = *(count+(i-1)*length_b+j);
 					*(flag+i*length_b + j) = 3;
 				}
@@ -49,8 +49,22 @@ void count_lcs(char *a, char *b,int length_a, int length_b,int *count, int *flag
 
 }
 
-void print_lcs(char *a,char *b,int length_a, int length_b, int *count, int *flag){
-
+void print_lcs(char *a,char *b,int length_a, int length_b, int *count, int *flag,int i, int j){	
+	if (i<0 || j <0){
+		return;
+	}
+	else{
+		if (*(flag+i*length_b+j) ==1){
+			print_lcs(a,b,length_a,length_b,count,flag,i-1,j-1);
+			printf("%c",a[i]);
+		}
+		else if (*(flag+i*length_b+j) ==2){
+			print_lcs(a,b,length_a,length_b,count,flag,i-1,j);
+		}
+		else{
+			print_lcs(a,b,length_a,length_b,count,flag,i,j-1);
+		}
+	}
 }
 
 /**
@@ -68,18 +82,22 @@ char * lcs(char *a,char *b,int length_a,int length_b){
 	count_lcs(a,b,length_a,length_b,(int *)count,(int *)flag);
 	int i=0;
 	int j=0;
-	for (i=0; i <length_a;++i){
+	/*for (i=0; i <length_a;++i){
 		for(j=0;j<length_b;++j){
-			printf("%d,",count[i][j]);
+			printf("%d,",flag[i][j]);
 		}
 		printf("\n");
-	}
+	}*/
+
+	print_lcs(a,b,length_a,length_b,(int *)count,(int *)flag,length_a - 1,length_b-1);
 		
 	
 }
 int main(int argc,char *argv[]){
-	char *a = "aaab";
-	char *b = "aa";
-	lcs(a,b,4,2);
+	char *a = "abcbdab";
+	char *b = "bdcaba";
+	int length_a = strlen(a);
+	int length_b = strlen(b);
+	lcs(a,b,length_a,length_b);
 	return 0;
 }
