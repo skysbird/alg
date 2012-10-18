@@ -72,7 +72,7 @@ int fsm_matcher(char *t, char *p,char *charset){
 	for ( i=0 ; i<length_t; ++i){
 		q = transform[q*e+charvalue(t[i])];	
 		if (q==m-1){
-			return i - m +2;
+			printf("result is %d\n", i - m +2);
 		}
 	}
 	return -1;
@@ -92,7 +92,6 @@ void print_arrayv(int *transform,int x,int y){
 
 int main(int argc,char *argv[]){
 	char *charset="abcdefghijklmnopqrstuvwxyz";
-	int pos = fsm_matcher("asdfaabcdeabcdefg","abcde",charset);
-	printf("result is %d\n",pos);
+	fsm_matcher("asdfaabcdeabcdefg","abcde",charset);
 	return 0;
 }
