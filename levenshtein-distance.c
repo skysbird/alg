@@ -101,8 +101,8 @@ void print_array(int *c,int x,int y){
 
 int p;
 int main(int argc,char *argv[]){
-	char *p = "a";
-	char *s = "abc";
+	char *p = "sot";
+	char *s = "stop";
 	int r = compute_distance(s,p);
 	printf("result is %d\n",r);
 
