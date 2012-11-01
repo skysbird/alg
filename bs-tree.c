@@ -142,10 +142,16 @@ void print_tree(BSTree *T,int level){
 }
 
 #include <stack>
+#include <map>
 using namespace std;
 
 stack<BSTree *> s;
-void first_order(BSTree *T){
+map<BSTree *,int> flag;
+
+void in_order(BSTree *T){
+	while (!s.empty()){
+		s.pop();
+	}
 	BSTree *p = T;
 	if (!p) return;
 	
@@ -159,7 +165,62 @@ void first_order(BSTree *T){
 		printf("%d ",p->value);
 		p=p->right;
 	}
+	printf("\n");
 }
+
+void pre_order(BSTree *T){
+	while (!s.empty()){
+		s.pop();
+	}
+	BSTree *p = T;
+	if (!p) return;
+	
+	while(p || !s.empty()){
+		while(p){
+			printf("%d ",p->value);
+			s.push(p);
+			p = p->left;
+		}		
+		p = s.top();
+		s.pop();
+		p=p->right;
+	}
+
+	printf("\n");
+}
+
+void last_order(BSTree *T){
+	while (!s.empty()){
+		s.pop();
+	}
+	BSTree *p = T;
+	if (!p) return;
+
+	while(p){
+	
+		s.push(p);
+		p = p->left;
+	}	
+	while(!s.empty()){
+		p = s.top();
+		if(flag[p]){
+			printf("%d ",p->value);	
+			s.pop();
+		}
+		else{
+			flag[p] = 1;
+			p = p->right;
+			while(p){
+				s.push(p);
+				p = p->left;	
+			}	
+		}
+	}
+	
+	printf("\n");
+}
+
+
 int main(int argc,char *argv[]){
 	BSTree *t = NULL;
 	insert(&t,15);
@@ -176,8 +237,16 @@ int main(int argc,char *argv[]){
 	insert(&t,7);
 	
 	print_tree(t,0);		
-	first_order(t);
-	
+	in_order(t);
+	pre_order(t);	
+	//printf("%d",flag[t]);
+	BSTree *t1 = NULL;
+	insert(&t1,15);
+	insert(&t1,5);
+	insert(&t1,16);
+	insert(&t1,20);
+	print_tree(t1,0);
+	last_order(t);
 	BSTree *n = search(t,5);
 	//printf("%d\n",n->value);
 	//BSTree *d = successor(n);
