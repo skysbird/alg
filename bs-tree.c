@@ -52,7 +52,7 @@ BSTree* successor(BSTree *p){
 }
 //insert node into T
 void insert(BSTree **T,int v){
-	BSTree *node = malloc(sizeof(BSTree));
+	BSTree *node = (BSTree *)malloc(sizeof(BSTree));
 	node->value = v;
 	node->left = NULL;
 	node->right = NULL;
@@ -87,7 +87,7 @@ void insert(BSTree **T,int v){
 	}
 }
 
-void delete(BSTree **T,BSTree *node){
+void del(BSTree **T,BSTree *node){
 	if (*T==node){
 		*T = NULL;
 	}
@@ -141,6 +141,25 @@ void print_tree(BSTree *T,int level){
 	}
 }
 
+#include <stack>
+using namespace std;
+
+stack<BSTree *> s;
+void first_order(BSTree *T){
+	BSTree *p = T;
+	if (!p) return;
+	
+	while(p || !s.empty()){
+		while(p){
+			s.push(p);
+			p = p->left;
+		}		
+		p = s.top();
+		s.pop();
+		printf("%d ",p->value);
+		p=p->right;
+	}
+}
 int main(int argc,char *argv[]){
 	BSTree *t = NULL;
 	insert(&t,15);
@@ -157,6 +176,7 @@ int main(int argc,char *argv[]){
 	insert(&t,7);
 	
 	print_tree(t,0);		
+	first_order(t);
 	
 	BSTree *n = search(t,5);
 	//printf("%d\n",n->value);
