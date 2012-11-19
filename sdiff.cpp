@@ -5,20 +5,28 @@
 #include <stdlib.h>
 
 using namespace std;
-void print_array(int *a,int x,int y){
+const int max_length = 1500;
+static int c[max_length][max_length];
+static int flag[max_length][max_length];	
+
+void print_array(int x,int y){
 	int i =0;
 	int j =0;
 	for(i = 0;i<x;++i){
 		for(j=0; j<y;++j){
-			printf("%d ",*(a+i*y+j));		
+			printf("%d ",c[i][j]);		
 		}
 		printf("\n");
 	}
-}
 
-const int max_length = 1500;
-static int c[max_length][max_length];
-static int flag[max_length][max_length];	
+	for(i = 0;i<x;++i){
+		for(j=0; j<y;++j){
+			printf("%d ",flag[i][j]);		
+		}
+		printf("\n");
+	}
+
+}
 
 int str_diff(string a,string b,int k){
 	int i =0;
@@ -47,7 +55,7 @@ int str_diff(string a,string b,int k){
 			}
 		}
 
-		if(max<c[i][0]){	
+		if(max<=c[i][0]){	
 			max = c[i][0];
 			result_i = i;
 			result_j = 0;
@@ -80,7 +88,7 @@ int str_diff(string a,string b,int k){
 	}
 
 	
-	//print_array((int*)c,a_length,b_length);
+	print_array(a_length,b_length);
 	//print_array((int*)flag,a_length,b_length);
 	for(i=1;i<a_length;++i){
 		for(j=1; j<b_length;++j){
@@ -102,9 +110,11 @@ int str_diff(string a,string b,int k){
 			}
 		}
 	}
+	print_array(a_length,b_length);
+	//print_array((int*)flag,a_length,b_length);
 
+	printf("max = %d,i = %d, j = %d\n", max,result_i-max+1,result_j-max+1);
 	return max;
-	//printf("max = %d,i = %d, j = %d\n", max,result_i-max+1,result_j-max+1);
 
 
 		
@@ -149,9 +159,14 @@ int split(const string& str, vector<string>& ret_, string sep = ",")
 int main(int argc,char *argv[]){
 	
 	//int k = 2;
-	//string a = "tabriz";
-	//string b = "torino";
-	//printf("%d",str_diff(a,b,k));
+	int k =2;
+	//string a = "abcdef";
+	//string b = "fedcba";
+
+	string a = "tabriz";
+	string b = "torino";
+	printf("%d",str_diff(a,b,k));
+	return 0;
 	string in;
 	getline(cin,in);
 	int num_of_cases = atoi(in.c_str());
