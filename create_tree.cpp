@@ -65,6 +65,8 @@ void create_tree(string input,BSTree **head){
 	
 }
 
+
+
 void print_tree(BSTree *T,int level){
 	if(T){
 		print_tree(T->right,level+1);	
