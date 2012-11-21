@@ -37,7 +37,7 @@ string find_same_substring(string input){
 }
 
 
-//suffix array
+//suffix array o(n^2)
 int comp2(string input1,string input2){
 	int i = 0;
 	int j = 0;
@@ -72,9 +72,46 @@ string find_same_substring2(string input){
 
 	return suffix[result].substr(0,max);
 }
+
+//kmp
+
+int * build_next_array(string input){
+	int *next = new int[input.size()];
+	int i =0;
+	next[0] = 0;
+	for ( i =1;i<input.size();++i){
+		int k = next[i-1] ;
+		while(k!=0 && input[k] != input[i]){
+			k = next[k];
+		}
+		if(input[k] == input[i]){
+			next[i] = k+1;
+		}
+		else{
+			next[i] = 0;
+		}
+	}	
+	return next;
+}
+
+string find_same_substring3(string input){
+	int *next = build_next_array(input);	
+	int i = 0;
+	int max = 0, max_i = 0;
+	for(i=0;i<input.size();++i){
+		if(max < next[i]){
+			max = next[i];
+			max_i = i;
+		}
+	}
+
+	return input.substr(max_i - max+1,max);
+}
+
 int main(int argc,char *argv[]){
 
 	printf("%s\n", find_same_substring("abcabcaabcde").c_str());
 	printf("%s\n", find_same_substring2("abcabcaabcde").c_str());
+	printf("%s\n", find_same_substring3("abcabcaabcde").c_str());
 	return 0;
 }
