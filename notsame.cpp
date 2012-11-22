@@ -50,6 +50,6 @@ string find_largest_not_same(string input){
 }
 
 int main(int argc,char *argv[]){
-	printf("%s\n",find_largest_not_same("ababc").c_str());
+	printf("%s\n",find_largest_not_same("aabasdfajb").c_str());
 	return 0;
 }

@@ -88,7 +88,7 @@ int str_diff(string a,string b,int k){
 	}
 
 	
-	print_array(a_length,b_length);
+	//print_array(a_length,b_length);
 	//print_array((int*)flag,a_length,b_length);
 	for(i=1;i<a_length;++i){
 		for(j=1; j<b_length;++j){
@@ -101,6 +101,15 @@ int str_diff(string a,string b,int k){
 					c[i][j] = c[i-1][j-1]+1;
 					--flag[i][j];
 				}
+				else{
+					if(k){
+						c[i][j] = 1;
+						flag[i][j] = k - 1;	
+					}
+					else{
+						c[i][j] = 0;
+					}
+				}
 			}
 
 			if(max<c[i][j]){	
@@ -110,10 +119,10 @@ int str_diff(string a,string b,int k){
 			}
 		}
 	}
-	print_array(a_length,b_length);
+	//print_array(a_length,b_length);
 	//print_array((int*)flag,a_length,b_length);
 
-	printf("max = %d,i = %d, j = %d\n", max,result_i-max+1,result_j-max+1);
+	//printf("max = %d,i = %d, j = %d\n", max,result_i-max+1,result_j-max+1);
 	return max;
 
 
@@ -159,14 +168,17 @@ int split(const string& str, vector<string>& ret_, string sep = ",")
 int main(int argc,char *argv[]){
 	
 	//int k = 2;
-	int k =2;
+	//int k =2;
 	//string a = "abcdef";
 	//string b = "fedcba";
 
-	string a = "tabriz";
-	string b = "torino";
-	printf("%d",str_diff(a,b,k));
-	return 0;
+	//string a = "tabriz";
+	//string b = "torino";
+	//int k = 0;
+	//string a = "abacba";
+	//string b ="abcaba";
+	//printf("%d",str_diff(a,b,k));
+	//return 0;
 	string in;
 	getline(cin,in);
 	int num_of_cases = atoi(in.c_str());
