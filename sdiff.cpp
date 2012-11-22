@@ -8,6 +8,7 @@ using namespace std;
 const int max_length = 1500;
 static int c[max_length][max_length];
 static int flag[max_length][max_length];	
+static int last[max_length][max_length];	
 
 void print_array(int x,int y){
 	int i =0;
@@ -90,9 +91,11 @@ int str_diff(string a,string b,int k){
 	
 	//print_array(a_length,b_length);
 	//print_array((int*)flag,a_length,b_length);
+	
 	for(i=1;i<a_length;++i){
 		for(j=1; j<b_length;++j){
 			flag[i][j] = flag[i-1][j-1];
+			last[i][j] = -1;
 			if(a[i]==b[j]){
 				c[i][j] = c[i-1][j-1] + 1;
 			}
@@ -102,12 +105,11 @@ int str_diff(string a,string b,int k){
 					--flag[i][j];
 				}
 				else{
-					if(k){
-						c[i][j] = 1;
-						flag[i][j] = k - 1;	
-					}
-					else{
-						c[i][j] = 0;
+					if(k>0){//给个机会舍弃掉最近一次不同的
+						int last_diff_pos = last[i][j];
+						if(last_diff_pos!=-1){
+							c[i][j] = c[i-1][j-1] - last_diff_pos + 1 ;
+						}
 					}
 				}
 			}
@@ -168,6 +170,7 @@ int split(const string& str, vector<string>& ret_, string sep = ",")
 int main(int argc,char *argv[]){
 	
 	//int k = 2;
+<<<<<<< HEAD
 	//int k =2;
 	//string a = "abcdef";
 	//string b = "fedcba";
@@ -179,6 +182,18 @@ int main(int argc,char *argv[]){
 	//string b ="abcaba";
 	//printf("%d",str_diff(a,b,k));
 	//return 0;
+	//int k =1;
+	//string a = "abcdef";
+	//string b = "fedcba";
+	int k = 1;
+	string a = "atabtt";
+	string b = "btactt";
+	//int k =0;
+	//string a = "abacba";
+	//string b = "abcaba";
+	
+	printf("%d",str_diff(a,b,k));
+	return 0;
 	string in;
 	getline(cin,in);
 	int num_of_cases = atoi(in.c_str());
