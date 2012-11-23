@@ -11,6 +11,7 @@ void insert_sort(int *p,int length ){
 			--j;
 		}
 		p[j] = v;
+		printf("%d\n",j);
 	}
 }
 
