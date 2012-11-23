@@ -7,8 +7,18 @@
 using namespace std;
 const int max_length = 1500;
 static int c[max_length][max_length];
-static int flag[max_length][max_length];	
-static int last[max_length][max_length];	
+
+#include <queue>
+
+class record{
+	public:
+		int left_diff;
+		queue<int> diff_pos;	
+		record(){
+			left_diff = 0;
+		}
+};
+
 
 void print_array(int x,int y){
 	int i =0;
@@ -20,12 +30,6 @@ void print_array(int x,int y){
 		printf("\n");
 	}
 
-	for(i = 0;i<x;++i){
-		for(j=0; j<y;++j){
-			printf("%d ",flag[i][j]);		
-		}
-		printf("\n");
-	}
 
 }
 
@@ -40,21 +44,22 @@ int str_diff(string a,string b,int k){
 	int max = 0;
 	int result_i = 0;
 	int result_j = 0;
-	memset(flag,-10000,max_length*max_length*sizeof(int));	
-	memset(c,-10000,max_length*max_length*sizeof(int));	
+	memset(c,0,max_length*max_length*sizeof(int));	
 
-	for(i=0;i<a_length;++i){
+	/*for(i=0;i<a_length;++i){
 		c[i][0]= 0;
-		flag[i][0] = k;
+		int left_diff = k;
 		if(a[i]==b[0]){
 			c[i][0] = 1;
 		}
 		else{
-			if(flag[i][0]){
+			if(left_diff){
 				c[i][0]= 1;
-				--flag[i][0];
+				--left_diff;
 			}
+			crec[i][0].diff_pos.push(i);
 		}
+		crec[i][0].left_diff = left_diff;
 
 		if(max<=c[i][0]){	
 			max = c[i][0];
@@ -67,16 +72,19 @@ int str_diff(string a,string b,int k){
 
 	for(j=0;j<b_length;++j){
 		c[0][j] = 0;
-		flag[0][j] = k;
+		int left_diff = k;
 		if(a[0]==b[j]){
 			c[0][j] = 1;
 		}
 		else{
-			if(flag[0][j]){
+			if(left_diff){
 				c[0][j]= 1;
-				--flag[0][j];
+				--left_diff;
 			}
+			crec[0][j].diff_pos.push(0);
 		}
+
+		crec[0][j].left_diff = left_diff;
 
 		if(max<c[0][j]){	
 			max = c[0][j];
@@ -88,43 +96,112 @@ int str_diff(string a,string b,int k){
 
 	}
 
-	
+	*/
 	//print_array(a_length,b_length);
 	//print_array((int*)flag,a_length,b_length);
-	
-	for(i=1;i<a_length;++i){
-		for(j=1; j<b_length;++j){
-			flag[i][j] = flag[i-1][j-1];
-			last[i][j] = -1;
-			if(a[i]==b[j]){
-				c[i][j] = c[i-1][j-1] + 1;
-			}
-			else{
-				if(flag[i][j]){
-					c[i][j] = c[i-1][j-1]+1;
-					--flag[i][j];
-				}
-				else{
-					if(k>0){//给个机会舍弃掉最近一次不同的
-						int last_diff_pos = last[i][j];
-						if(last_diff_pos!=-1){
-							c[i][j] = c[i-1][j-1] - last_diff_pos + 1 ;
-						}
+		
+		for(i=0; i<a_length;++i){
+			int ii = i;
+			int jj = 0; 
+			record last;
+			last.left_diff = k;
+			while(ii<a_length && jj<b_length){
+
+				if(a[ii]==b[jj]){
+					if(ii==0||jj==0){
+						c[ii][jj] = 1;
+					}
+					else{
+						c[ii][jj] = c[ii-1][jj-1] + 1;
 					}
 				}
-			}
+				else{
+					if(last.left_diff){
+						if(ii==0||jj==0){
+							c[ii][jj] = 1;
+						}
+						else{
+							c[ii][jj] = c[ii-1][jj-1] + 1;
+						}
+						--last.left_diff;
+					}
+					else{
+						if(k>0){
+							int first_diff_pos = last.diff_pos.front();
+							c[ii][jj] = ii - first_diff_pos;
+							last.diff_pos.pop();
+						}
+					}
+					last.diff_pos.push(ii);
+				}
 
-			if(max<c[i][j]){	
-				max = c[i][j];
-				result_i = i;
-				result_j = j;
+				if(max<c[ii][jj]){	
+					max = c[ii][jj];
+					result_i = ii;
+					result_j = jj;
+				}
+				++ii;
+				++jj;
 			}
+			
+
+
 		}
-	}
+
+		for(j=0; j<b_length;++j){
+			int ii = 0;
+			int jj = j;
+			record last;
+			last.left_diff = k;
+			while(ii<a_length && jj<b_length){
+
+				if(a[ii]==b[jj]){
+					if(ii==0||jj==0){
+						c[ii][jj] = 1;
+					}
+					else{
+						c[ii][jj] = c[ii-1][jj-1] + 1;
+					}
+				}
+				else{
+					if(last.left_diff){
+						if(ii==0||jj==0){
+							c[ii][jj] = 1;
+						}
+						else{
+							c[ii][jj] = c[ii-1][jj-1] + 1;
+						}
+						--last.left_diff;
+					}
+					else{
+						if(k>0){
+							int first_diff_pos = last.diff_pos.front();
+							c[ii][jj] = ii - first_diff_pos;
+							last.diff_pos.pop();
+						}
+					}
+					last.diff_pos.push(ii);
+
+				}
+
+				if(max<c[ii][jj]){	
+					max = c[ii][jj];
+					result_i = ii;
+					result_j = jj;
+				}
+
+
+				++ii;
+				++jj;
+			}
+			
+
+
+		}
 	//print_array(a_length,b_length);
 	//print_array((int*)flag,a_length,b_length);
 
-	//printf("max = %d,i = %d, j = %d\n", max,result_i-max+1,result_j-max+1);
+	//printf("max = %d,ii = %d, jj = %d\n", max,result_i,result_j);
 	return max;
 
 
@@ -170,7 +247,6 @@ int split(const string& str, vector<string>& ret_, string sep = ",")
 int main(int argc,char *argv[]){
 	
 	//int k = 2;
-<<<<<<< HEAD
 	//int k =2;
 	//string a = "abcdef";
 	//string b = "fedcba";
@@ -185,15 +261,16 @@ int main(int argc,char *argv[]){
 	//int k =1;
 	//string a = "abcdef";
 	//string b = "fedcba";
-	int k = 1;
-	string a = "atabtt";
-	string b = "btactt";
-	//int k =0;
-	//string a = "abacba";
-	//string b = "abcaba";
+	//int k = 1;
+	//string a = "atabtt";
+	//string b = "btactt";
+	//printf("%d\n",sizeof(record));
+	//int k =2;
+	//string a = "aaaattt";
+	//string b = "babbttt";
 	
-	printf("%d",str_diff(a,b,k));
-	return 0;
+	//printf("%d",str_diff(a,b,k));
+	//return 0;
 	string in;
 	getline(cin,in);
 	int num_of_cases = atoi(in.c_str());
