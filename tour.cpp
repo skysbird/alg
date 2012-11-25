@@ -150,12 +150,14 @@ void tour(int *arr,int length){
 		}
 		i -= 2;
 	}
-	
+
+	i = 0;	
 	while(!tree[0].done){	
 		printf("%d\n",tree[0].v);
 		//printf("%d\n",tree[0].pos);
 		tree[tree[0].pos].done = 1;
 		adjust(tree,tree[0].pos);
+		printf("tree[0].done=%d tree[0].pos=%d times = %d\n",tree[0].done,tree[0].pos,i++);
 	}
 	//print_array_tree(tree,tree_length);
 
