@@ -27,7 +27,7 @@ string next_word(string content,int &start_pos){
 	return content.substr(start_pos,i-start_pos);
 }
 int main(int argc,char *argv[]){
-	string content = "c ef a b d e c";
+	string content = "c a b a d c b d";
 	int *c = new int[content.size()];
 
 	dict.insert("a");
