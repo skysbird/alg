@@ -59,7 +59,7 @@ int main(int argc,char *argv[]){
 	++i;	
 	word=next_word(content,processed_pos);
 	int min = content.size();
-	int last_t = 0;
+	int last_t = 0;//上一轮计算的是后更改了start_pos,last_t表示更改了start_pos后，需要补偿的差值
 	while(word!=""){
 		if(dict.count(word)){
 			word_list.push_back(word);
