@@ -27,7 +27,7 @@ string next_word(string content,int &start_pos){
 	return content.substr(start_pos,i-start_pos);
 }
 int main(int argc,char *argv[]){
-	string content = "c a b a d c b d";
+	string content = "a a a a a b c d";
 	int *c = new int[content.size()];
 
 	dict.insert("a");
@@ -59,6 +59,7 @@ int main(int argc,char *argv[]){
 	++i;	
 	word=next_word(content,processed_pos);
 	int min = content.size();
+	int last_t = 0;
 	while(word!=""){
 		if(dict.count(word)){
 			word_list.push_back(word);
@@ -79,8 +80,9 @@ int main(int argc,char *argv[]){
 				}
 				start_word_pos = front_pos_index;
 
-				c[i] = c[i-1] - (c[start_word_pos-1]) + word.size();
-				c[start_word_pos] = word_list[start_word_pos].size();
+				c[i] = c[i-1] - (c[start_word_pos-1]) + word.size() + last_t;
+				//c[start_word_pos] = word_list[start_word_pos].size();
+				last_t = c[start_word_pos] - word_list[start_word_pos].size();
 
 				dict_word_count[word_list[deleted_pos]]--;
 				found_in_dict--;
@@ -119,8 +121,9 @@ int main(int argc,char *argv[]){
 
 			start_word_pos = front_pos_index;
 
-			c[i] = c[i-1] - (c[start_word_pos-1]) + word.size();
-			c[start_word_pos] = word_list[start_word_pos].size();
+			c[i] = c[i-1] - (c[start_word_pos-1]) + word.size()+last_t;
+			//c[start_word_pos] = word_list[start_word_pos].size();
+			last_t = c[start_pos] - word_list[start_pos].size();
 
 			dict_word_count[word_list[deleted_pos]]--;
 			found_in_dict--;
