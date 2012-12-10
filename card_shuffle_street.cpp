@@ -11,6 +11,7 @@ void print_arr(int *arr,int n){
 	}
 	printf("\n");
 }
+
 int times(int n,int k){
 	int *seq = new int[n];
 	int i = 0;
@@ -23,10 +24,10 @@ int times(int n,int k){
 	int step = n/k;
 
 	int times = 0;
+	int *seq2 = new int[n];
 	while(1){
 		int start = n - step;
 		i = 0;	
-		int *seq2 = new int[n];
 		while(start < n){
 			int pos = start;
 			while(pos>=0){
@@ -44,6 +45,39 @@ int times(int n,int k){
 	
 }
 
+int times2(int n,int k){
+	int step = n/k;
+	int times = 0;
+	int start = n - step;
+	int pos0 = 0;
+
+	int t = 0;	
+	int i = 0;
+	
+	do{
+		i = start;
+		t = 0;
+		while(1){
+
+			int m = (i - pos0)%step;
+			if (m!=0){	
+				++t;
+				++i;		
+			}
+			else{
+				break;
+			}
+		}
+
+		pos0 = k*t + (i-pos0)/step;
+		times++;	
+	}while(pos0!=0);
+
+	return times;
+	
+}
+
+
 #include <vector>
 #include <cstdlib>
 
@@ -56,7 +90,7 @@ int main(int argc,char *argv[]){
 	int k = 0;
 	while(num_of_cases--){
 		scanf("%d %d",&n,&k) ;
-		outputs.push_back(times(n,k));
+		outputs.push_back(times2(n,k));
 
 	}
 	
