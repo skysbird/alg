@@ -38,18 +38,14 @@ int split(const string& str, vector<string>& ret_, string sep = ",")
     return 0;
 }
 
-int insert_sort(int *data,int length){
+int insert_sort_stat(int *data,int length){
 	int i = 0;
+	int j = 0 ;
 	int sum = 0;
-	for (i = 1; i< length; ++i){
-		int j = i - 1;	
-		int v = data[i];
-		while( j>=0 && v < data[j]){
-			data[j+1] = data[j];
-			--j;
-			++sum;
+	for (i = 0; i< length; ++i){
+		for ( j = i+1;j<length;++j){
+			if (data[i] > data[j]) ++sum;
 		}
-		data[j+1] = v;
 	}
 	return sum;
 }
@@ -61,34 +57,25 @@ void print_array(int *p,int length){
 	}
 	printf("\n");
 }
+static int arr[100000];
 int main(int argc,char *argv[]){
 	string in;
 	getline(cin,in);
 	int num_of_cases = atoi(in.c_str());
-	vector<string> cases;
-	vector<string>::iterator it;
 	vector<int> outputs;	
+	int n = 0;
+	int i = 0;
 	while(num_of_cases--){
-		getline(cin,in);
-		int n = atoi(in.c_str());
-		getline(cin,in);
-		vector<string> inputs ;
-		split(in,inputs," ");
+		scanf("%d",&n) ;
+	        for(i = 0;i < n;i++) scanf("%d",&arr[i]) ;
 		
-		int *arr = new int[n];
-		int i = 0;
-		for(i = 0 ; i<n; ++i){
-			arr[i] = atoi(inputs[i].c_str());
-		}
 		//int k = atoi(inputs[0].c_str());
 		//string a = inputs[1];
 		//string b = inputs[2];
-		outputs.push_back(insert_sort(arr,n));
+		outputs.push_back(insert_sort_stat(arr,n));
 
 	}
 	
-	for( it = cases.begin() ; it<cases.end(); ++it){
-	}
 
 	vector<int>::iterator oit;
 	for ( oit = outputs.begin(); oit < outputs.end(); ++oit){
