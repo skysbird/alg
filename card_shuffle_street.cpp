@@ -45,12 +45,17 @@ int times(int n,int k){
 	
 }
 
+#include <set>
+
+set<int> temp_pos;
+
 int times2(int n,int k){
 	int step = n/k;
 	int times = 0;
 	int start = n - step;
 	int pos0 = 0;
-
+	
+	temp_pos.insert(pos0);
 	int t = 0;	
 	int i = 0;
 	
@@ -61,8 +66,16 @@ int times2(int n,int k){
 
 			int m = (i - pos0)%step;
 			if (m!=0){	
-				++t;
-				++i;		
+				if(i < pos0){
+					t = pos0 - i;
+					i = pos0;
+
+				}
+				else{
+					int need = ((i - pos0)/step +1)*step - (i-pos0);
+					t = need;
+					i += need;
+				}
 			}
 			else{
 				break;
@@ -70,6 +83,7 @@ int times2(int n,int k){
 		}
 
 		pos0 = k*t + (i-pos0)/step;
+		if(temp_pos.count(pos0) && pos0!=0) return -1;
 		times++;	
 	}while(pos0!=0);
 
