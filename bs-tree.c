@@ -220,7 +220,23 @@ void last_order(BSTree *T){
 	printf("\n");
 }
 
+int max_height(BSTree *node){
+	if(node==NULL){
+		return 0;
+	}
+	int l =0;
+	if(node->left){
+		l = max_height(node->left) + 1;
+	}
+	int r = 0;
+	if(node->right){
+		r = max_height(node->right) + 1;
+	}
 
+	return l>r?l:r;
+
+
+}
 int main(int argc,char *argv[]){
 	BSTree *t = NULL;
 	insert(&t,15);
@@ -237,7 +253,8 @@ int main(int argc,char *argv[]){
 	insert(&t,7);
 	
 	print_tree(t,0);		
-	in_order(t);
+	printf("max_height = %d\n",max_height(t));
+	/*in_order(t);
 	pre_order(t);	
 	//printf("%d",flag[t]);
 	BSTree *t1 = NULL;
@@ -251,7 +268,7 @@ int main(int argc,char *argv[]){
 	//printf("%d\n",n->value);
 	//BSTree *d = successor(n);
 	//printf("%d\n",d->value);
-	delete(&t,n);
-	print_tree(t,0);
+	//delete(&t,n);
+	print_tree(t,0);*/
 	return 0;
 }

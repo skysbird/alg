@@ -55,14 +55,14 @@ int times2(int n,int k){
 	int start = n - step;
 	int pos0 = 0;
 	
-	temp_pos.insert(pos0);
+	//temp_pos.insert(pos0);
 	int t = 0;	
 	int i = 0;
 	
 	do{
 		i = start;
 		t = 0;
-		while(1){
+		//while(1){
 
 			int m = (i - pos0)%step;
 			if (m!=0){	
@@ -77,25 +77,55 @@ int times2(int n,int k){
 					i += need;
 				}
 			}
-			else{
-				break;
-			}
-		}
+		//	else{
+		//		break;
+		//	}
+		//}
 
 		pos0 = k*t + (i-pos0)/step;
-		if(temp_pos.count(pos0) && pos0!=0) return -1;
+		//if(temp_pos.count(pos0) && pos0!=0) return -1;
 		times++;	
 	}while(pos0!=0);
 
 	return times;
 	
 }
+#include <math.h>
 
+int times3(int n,int k){
+	int step = n/k;
+	int times = 1;
+	while(1){
+		if(int(pow(k,times)) %(n+1) == 1){
+			break;
+		}
+		times++;
+	}
+
+	return times;
+	
+}
 
 #include <vector>
 #include <cstdlib>
 
 int main(int argc,char *argv[]){
+	/*int nn = 1000000000;
+	int kk = nn;
+
+	while(nn>=2){
+		kk = nn;
+		while(kk>=2){
+			if(nn%kk==0){
+				printf("n=%d,k=%d\n",nn,kk);
+				printf("%d\n",times2(nn,kk));
+			}
+			--kk;
+		}
+		--nn;
+	}
+	
+	return 0;*/
 	string in;
 	getline(cin,in);
 	int num_of_cases = atoi(in.c_str());
@@ -104,7 +134,7 @@ int main(int argc,char *argv[]){
 	int k = 0;
 	while(num_of_cases--){
 		scanf("%d %d",&n,&k) ;
-		outputs.push_back(times2(n,k));
+		outputs.push_back(times3(n,k));
 
 	}
 	
