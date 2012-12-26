@@ -226,13 +226,64 @@ int max_height(BSTree *node,int &max_l,int &max_r){
 		max_r = 0;
 		return 0;
 	}
-	if(node->left==NULL){
-		max_l = 0;
-		if(node->right!=NULL){
-			int 
+	int max_l1 = 0;
+	int max_r1 = 0;
+
+	if(node->left && node->right){
+		int max_height_r = max_height(node->right,max_l1,max_r1);
+		max_r = max_l1 > max_r1? max_l1:max_r1;
+		max_r = max_r + 1;
+
+		int max_height_l = max_height(node->left,max_l1,max_r1);
+		max_l = max_l1 > max_r1? max_l1:max_r1;
+		max_l = max_l + 1;
+
+		int result = max_l + max_r;
+		if(result < max_height_r){
+			result = max_height_r;
+		}
+
+		if(result < max_height_l){
+			result = max_height_l;
+		}
+		return result;
+	}
+	else{
+		if(!node->left && !node->right){
+			max_l = 0;
+			max_r = 0;
+			return 0;
+		}
+
+		if(node->left){
+			int max_height_l = max_height(node->left,max_l1,max_r1);
+			max_l = max_l1 > max_r1? max_l1:max_r1;
+			max_l = max_l + 1;
+			max_r = 0;
+			int result = max_l + max_r;
+
+			if(result < max_height_l){
+				result = max_height_l;
+			}
+			return result;
+			
+		}
+
+		if(node->right){
+			int max_height_r = max_height(node->right,max_l1,max_r1);
+			max_r = max_l1 > max_r1? max_l1:max_r1;
+			max_r = max_r + 1;
+
+			max_l = 0;
+			int result = max_l + max_r;
+			if(result < max_height_r){
+				result = max_height_r;
+			}
+
+			return result;
+
 		}
 	}
-	max_height(node
 }
 int main(int argc,char *argv[]){
 	BSTree *t = NULL;
@@ -249,7 +300,10 @@ int main(int argc,char *argv[]){
 	insert(&t,6);
 	insert(&t,7);
 	
-	print_tree(t,0);		
-	printf("max_height = %d\n",max_height(t));
+	print_tree(t,0);	
+	int max_l = 0;
+	int max_r = 0;	
+	int r = max_height(t,max_l,max_r);
+	printf("max_height = %d\n,max_l = %d\nmax_r=%d\n",r,max_l,max_r);
 	return 0;
 }
